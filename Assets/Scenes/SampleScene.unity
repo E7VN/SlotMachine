@@ -625,6 +625,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 487982703}
+  - component: {fileID: 487982704}
   m_Layer: 5
   m_Name: Reel_2
   m_TagString: Untagged
@@ -655,6 +656,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &487982704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487982702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4351a285aa6664eaf9f2a19fd12209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolPool: []
+  symbolHeight: 150
+  spinSpeed: 1800
+  spinDuration: 2
+  symbolContainer: {fileID: 0}
+  visibleSymbolImages: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,6 +1416,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 997384526}
+  - component: {fileID: 997384527}
   m_Layer: 5
   m_Name: Reel_1
   m_TagString: Untagged
@@ -1427,6 +1447,36 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &997384527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997384525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4351a285aa6664eaf9f2a19fd12209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolPool:
+  - symbolName: Seven
+    sprite: {fileID: 0}
+    payoutMultiplier: 0
+  - symbolName: 
+    sprite: {fileID: 0}
+    payoutMultiplier: 0
+  - symbolName: 
+    sprite: {fileID: 0}
+    payoutMultiplier: 0
+  - symbolName: 
+    sprite: {fileID: 0}
+    payoutMultiplier: 0
+  symbolHeight: 150
+  spinSpeed: 1800
+  spinDuration: 2
+  symbolContainer: {fileID: 0}
+  visibleSymbolImages: []
 --- !u!1 &1102896918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,6 +1486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102896919}
+  - component: {fileID: 1102896920}
   m_Layer: 5
   m_Name: Reel_3
   m_TagString: Untagged
@@ -1466,6 +1517,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1102896920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102896918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4351a285aa6664eaf9f2a19fd12209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  symbolPool: []
+  symbolHeight: 150
+  spinSpeed: 1800
+  spinDuration: 2
+  symbolContainer: {fileID: 0}
+  visibleSymbolImages: []
 --- !u!1 &1282681118
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,6 +1840,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471580286}
   m_CullTransparentMesh: 1
+--- !u!1 &1521931561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521931563}
+  - component: {fileID: 1521931562}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1521931562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521931561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 210fcefd0c5c48548a8895ffa42f52d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reels: []
+  spinButton: {fileID: 0}
+  winPopup: {fileID: 0}
+  winText: {fileID: 0}
+  balanceText: {fileID: 0}
+  startingBalance: 100
+  spinCost: 10
+--- !u!4 &1521931563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521931561}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 881.4599, y: 461.46216, z: 3.5963433}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1523587051
 GameObject:
   m_ObjectHideFlags: 0
@@ -2609,3 +2729,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 283403731}
   - {fileID: 1942386340}
+  - {fileID: 1521931563}

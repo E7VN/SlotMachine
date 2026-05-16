@@ -6,7 +6,7 @@ using TMPro;
 public class SlotGameManager : MonoBehaviour
 {
     [Header("Reels")]
-    public Reel[] reels;              // Assign Reel_1, Reel_2, Reel_3
+    public Reel[] reels;              
 
     [Header("UI References")]
     public Button spinButton;
@@ -45,11 +45,9 @@ public class SlotGameManager : MonoBehaviour
         _isSpinning = true;
         spinButton.interactable = false;
 
-        // Stagger reel starts by 0.2s each for feel
         for (int i = 0; i < reels.Length; i++)
             reels[i].StartSpin(i * 0.2f);
 
-        // Wait for all reels to finish (max reel duration + stagger)
         float totalWait = 2f + (reels.Length - 1) * 0.2f + 0.1f;
         yield return new WaitForSeconds(totalWait);
 
@@ -67,16 +65,14 @@ public class SlotGameManager : MonoBehaviour
 
         if (r0 == r1 && r1 == r2)
         {
-            // All match — WIN
-            int payout = reels[0].symbolPool[r0].payoutMultiplier * spinCost;
+            int payout = 10 * spinCost;
             _balance += payout;
             UpdateBalanceUI();
-            ShowWin($"🎉 JACKPOT! +{payout} coins!");
+            ShowWin($"JACKPOT! +{payout} coins!");
         }
         else if (r0 == r1 || r1 == r2 || r0 == r2)
         {
-            // Bonus: 2 matching = small win
-            int payout = spinCost; // Return spin cost
+            int payout = spinCost;
             _balance += payout;
             UpdateBalanceUI();
             ShowWin($"✨ 2 Matches! +{payout} coins!");
@@ -94,6 +90,5 @@ public class SlotGameManager : MonoBehaviour
         balanceText.text = $"Balance: {_balance}";
     }
 
-    // Called by WinPopup close button
     public void CloseWinPopup() => winPopup.SetActive(false);
 }
