@@ -3,58 +3,92 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[RequireComponent(typeof(AudioSource))]
 public class SlotGameManager : MonoBehaviour
 {
     [Header("Reels")]
-    public Reel[] reels;              
+    public Reel[] reels;
 
-    [Header("UI References")]
+    [Header("UI")]
     public Button spinButton;
     public GameObject winPopup;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI balanceText;
 
-    [Header("Game Config")]
+    [Header("Lever")]
+    public Image neutralLeverImage;
+    public Image pulledLeverImage;
+    public float leverReturnDelay = 1f;
+
+    [Header("Game")]
     public int startingBalance = 100;
     public int spinCost = 10;
 
-    private int _balance;
-    private bool _isSpinning;
+    [Header("Audio")]
+    public AudioClip spinClip;
+    public AudioClip jackpotClip;
+    public AudioClip matchClip;
+
+    private int balance;
+    private bool isSpinning;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
-        _balance = startingBalance;
+        balance = startingBalance;
         UpdateBalanceUI();
-        winPopup.SetActive(false);
-        spinButton.onClick.AddListener(OnSpinPressed);
+
+        if (winPopup != null)
+            winPopup.SetActive(false);
+
+        if (neutralLeverImage != null) neutralLeverImage.enabled = true;
+        if (pulledLeverImage != null) pulledLeverImage.enabled = false;
+
+        if (spinButton != null)
+            spinButton.onClick.AddListener(TriggerSpin);
     }
 
-    private void OnSpinPressed()
+    public void TriggerSpin()
     {
-        if (_isSpinning || _balance < spinCost) return;
+        if (isSpinning || balance < spinCost)
+            return;
 
-        _balance -= spinCost;
-        UpdateBalanceUI();
-        winPopup.SetActive(false);
-
-        StartCoroutine(DoSpin());
+        StartCoroutine(SpinSequence());
     }
 
-    private IEnumerator DoSpin()
+    private IEnumerator SpinSequence()
     {
-        _isSpinning = true;
-        spinButton.interactable = false;
+        isSpinning = true;
+        balance -= spinCost;
+        UpdateBalanceUI();
+
+        if (winPopup != null)
+            winPopup.SetActive(false);
+
+        if (audioSource != null && spinClip != null)
+            audioSource.PlayOneShot(spinClip);
+
+        if (neutralLeverImage != null) neutralLeverImage.enabled = false;
+        if (pulledLeverImage != null) pulledLeverImage.enabled = true;
 
         for (int i = 0; i < reels.Length; i++)
             reels[i].StartSpin(i * 0.2f);
 
-        float totalWait = 2f + (reels.Length - 1) * 0.2f + 0.1f;
-        yield return new WaitForSeconds(totalWait);
+        yield return new WaitForSeconds(2.6f);
 
         EvaluateResult();
 
-        _isSpinning = false;
-        spinButton.interactable = true;
+        yield return new WaitForSeconds(leverReturnDelay);
+
+        if (pulledLeverImage != null) pulledLeverImage.enabled = false;
+        if (neutralLeverImage != null) neutralLeverImage.enabled = true;
+
+        isSpinning = false;
     }
 
     private void EvaluateResult()
@@ -65,30 +99,56 @@ public class SlotGameManager : MonoBehaviour
 
         if (r0 == r1 && r1 == r2)
         {
-            int payout = 10 * spinCost;
-            _balance += payout;
+            int payout = GetPayoutMultiplier(r0) * spinCost;
+            balance += payout;
             UpdateBalanceUI();
-            ShowWin($"JACKPOT! +{payout} coins!");
+            ShowWin("JACKPOT!\n+" + payout + " coins!");
+
+            if (audioSource != null && jackpotClip != null)
+                audioSource.PlayOneShot(jackpotClip);
         }
         else if (r0 == r1 || r1 == r2 || r0 == r2)
         {
             int payout = spinCost;
-            _balance += payout;
+            balance += payout;
             UpdateBalanceUI();
-            ShowWin($"✨ 2 Matches! +{payout} coins!");
+            ShowWin("2 MATCHES!\n+" + payout + " coins!");
+
+            if (audioSource != null && matchClip != null)
+                audioSource.PlayOneShot(matchClip);
+        }
+    }
+
+    private int GetPayoutMultiplier(int symbolIndex)
+    {
+        switch (symbolIndex)
+        {
+            case 0: return 10;
+            case 1: return 2;
+            case 2: return 3;
+            case 3: return 5;
+            default: return 1;
         }
     }
 
     private void ShowWin(string message)
     {
-        winPopup.SetActive(true);
-        winText.text = message;
+        if (winPopup != null)
+            winPopup.SetActive(true);
+
+        if (winText != null)
+            winText.text = message;
     }
 
     private void UpdateBalanceUI()
     {
-        balanceText.text = $"Balance: {_balance}";
+        if (balanceText != null)
+            balanceText.text = "Balance: " + balance;
     }
 
-    public void CloseWinPopup() => winPopup.SetActive(false);
+    public void CloseWinPopup()
+    {
+        if (winPopup != null)
+            winPopup.SetActive(false);
+    }
 }
